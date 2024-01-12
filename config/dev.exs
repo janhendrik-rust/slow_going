@@ -2,9 +2,9 @@ import Config
 
 # Configure your database
 config :slow_going, SlowGoing.Repo,
-  username: "sa",
-  password: "some!Password",
-  hostname: "localhost",
+  username: System.get_env("DATABASE_USER") || "sa",
+  password: System.get_env("DATABASE_PASSWORD") || "somepassword",
+  hostname: System.get_env("DATABASE_HOST") || "localhost",
   database: "slow_going_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
@@ -19,7 +19,7 @@ config :slow_going, SlowGoing.Repo,
 config :slow_going, SlowGoingWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
