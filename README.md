@@ -1,18 +1,29 @@
 # SlowGoing
 
-To start your Phoenix server:
-
   * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+  * Start an iex session with `iex -S mix`
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+# Test Erlang ODBC
 
-## Learn more
+  iex> :odbc.start()
+  
+  iex> conn_str = 'DRIVER={ODBC Driver 18 for SQL Server};SERVER=localhost;DATABASE=slow_going_dev;UID=sa;PWD=*_Redacted_*;TrustServerCertificate=yes;'
+  
+  iex> {:ok, sqlcon} = :odbc.connect(conn_str,[])
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+  iex> {time, result} = :timer.tc( :odbc, :sql_query, [sqlcon, to_charlist("Select [float_one], [float_two], [float_three], [float_four], [float_five], [float_six], [float_seven], [float_eight], [float_nine], [int_one], [int_two], [int_three] from floats_test")])
+
+  iex> time
+
+# Test Ecto Raw Query
+
+  iex> {time, result} = :timer.tc(Ecto.Adapters.SQL, :query!, [SlowGoing.Repo, "Select [float_one], [float_two], [float_three], [float_four], [float_five], [float_six], [float_seven], [float_eight], [float_nine], [int_one], [int_two], [int_three] from floats_test", []])
+  
+  iex> time
+
+# Test Ecto Schema Query
+
+  iex> {time, result} = :timer.tc(SlowGoing.Repo, :all, [SlowGoing.Platform.FloatsTest])
+  
+  iex> time
