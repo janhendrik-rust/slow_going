@@ -7,6 +7,8 @@
 # General application configuration
 import Config
 
+config :tds, :text_encoder, Excoding
+
 config :slow_going,
   ecto_repos: [SlowGoing.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
