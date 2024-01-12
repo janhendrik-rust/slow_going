@@ -6,9 +6,9 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :slow_going, SlowGoing.Repo,
-  username: "sa",
-  password: "some!Password",
-  hostname: "localhost",
+  username: System.get_env("DATABASE_USER") || "sa",
+  password: System.get_env("DATABASE_PASSWORD") || "somepassword",
+  hostname: System.get_env("DATABASE_HOST") || "localhost",
   database: "slow_going_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
