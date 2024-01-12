@@ -21,9 +21,11 @@ defmodule SlowGoingWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", SlowGoingWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", SlowGoingWeb.Api, as: :api do
+    pipe_through :api
+
+    resources "/floats_test", FloatsTestController
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:slow_going, :dev_routes) do
