@@ -7,6 +7,7 @@ config :slow_going, SlowGoing.Repo,
   hostname: System.get_env("DATABASE_HOST") || "localhost",
   database: "slow_going_dev",
   stacktrace: true,
+  timeout: 5000,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
